@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Word frequency sorter</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--This tells flask where to find the css file.-->
+		<link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/main.css') }}>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="index.html" class="logo">The BYU Word Frequency Sorter</a>
+					<!-- If links to other pages are needed they can be added here. -kp-->
+					<!--
+					<nav id="nav">
+						<a href="#">Home</a>
+						<a href="#">Language Support</a>
+						<a href="#">Contact</a>
+					</nav>
+				-->
+					<a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+				</div>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<!-- Banner Text can be added here if needed. It would appear in the center of the banner in large font. -kp
+				<h1>The BYU word frequency sorter</h1>-->
+			</section>
+
+		<!-- Language tool section -->
+			<section id="one" class="wrapper">
+				<div class="inner">
+					<div class="flex flex-3">
+						<article>
+							<header>
+								<h3>Russian Language</h3>
+							</header>
+							<p>Enter a list of words to sort and label.</p>
+							<form method="POST">
+								<textarea rows="10" cols="20" name="text" placeholder="Paste wordlist here">слово&#13;&#10;дуб&#13;&#10;работа</textarea>
+								<input type="submit" name="freq_form" value="Sort">
+							</form>
+							<footer>
+								<p>Lemma frequencies are taken from the <a href="http://www.artint.ru/projects/frqlist/frqlist-en.php">Serge Sharoff's list</a>.</p>
+							</footer>
+						</article>
+						<article>
+							<header>
+								<h3>Other language coming soon.</h3>
+							</header>
+							<p>Coming soon.</p>
+							<footer>
+								<a href="#" class="button special">More</a>
+							</footer>
+						</article>
+						<article>
+							<header>
+								<h3>Other language coming soon.</h3>
+							</header>
+							<p>Coming soon.</p>
+							<footer>
+								<a href="#" class="button special">More</a>
+							</footer>
+						</article>
+					</div>
+				</div>
+			</section>
+			<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<div class="flex">
+						<!-- This is required for use to give credit to the original template designer. -kp-->
+						<div class="copyright">
+							&copy;Site Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="http://hdw7.com/wallpapers-343/byu-cougars-1920x1080.html">HDW7</a>.
+						</div>
+						<!-- This can be used for social media links if desired. -kp-->
+						<!--
+						<ul class="icons">
+							<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a></li>
+							<li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a></li>
+							<li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
+						</ul>
+					-->
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="static/js/jquery.min.js"></script>
+			<script src="static/js/skel.min.js"></script>
+			<script src="static/js/util.js"></script>
+			<script src="static/js/main.js"></script>
+
+	</body>
+</html>

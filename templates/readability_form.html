@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <h1>Russian readability levels</h1>
+    <p>Enter a text and click "Analyze" to see its <a href="https://www.coe.int/en/web/common-european-framework-reference-languages/level-descriptions">CEFR reading level.</a></p>
+    <form method="POST">
+	    <textarea rows="30" cols="50" name="text" placeholder="Paste text here">{{request.form['text'] or 'Равным образом сложившаяся структура организации требуют от нас анализа форм развития. Таким образом начало повседневной работы по формированию позиции позволяет выполнять важные задания по разработке соответствующий условий активизации.'}}</textarea>
+        <input type="submit" name="freq_form" value="Analyze">
+    </form>
+    <div id="level"><h2>{{level}}</h2></div>
+</body>
+</html>
