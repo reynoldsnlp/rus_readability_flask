@@ -1,5 +1,6 @@
 """Flask webapp to compute readability of a text."""
 from math import isnan
+import os.path
 import sys
 
 from flask import Flask
@@ -13,12 +14,14 @@ from udar.features import ALL
 app = Flask(__name__)
 application = app  # our hosting requires `application` in passenger_wsgi
 
+local_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 # load model
-rf = joblib.load('rf.joblib')
-print(len(rf.feature_importances_), 'features in RF model.', file=sys.stderr)
+rf = joblib.load(f'{local_dir}/rf.joblib')
+# print(len(rf.feature_importances_), 'features in RF model.', file=sys.stderr)
 # load features
-with open('rf.features') as f:
+with open(f'{local_dir}/rf.features') as f:
     feature_names = [line.strip() for line in f]
 feature_extractor = ALL.new_extractor_from_subset(feature_names)
 
@@ -50,5 +53,5 @@ def freq_form_post():
 
 
 if __name__ == "__main__":
-    app.debug = True
-    app.run()
+    app.debug = False
+    app.run(host='0.0.0.0', port=5001)
