@@ -50,8 +50,3 @@ def freq_form_post():
     elif request.method == 'POST':
         level = get_CEFR_level(request.form['text'])
         return render_template('readability_form.html', level=level)
-
-
-if __name__ == "__main__":
-    app.debug = False
-    app.run(host='0.0.0.0', port=5001)
