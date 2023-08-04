@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<link rel="stylesheet" type="text/css" href={{ url_for('static', filename='styles.css') }}>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='bulma.min.css' ) }}>
+    <link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico' ) }}>
 </head>
+
 <body>
-    <h1>Russian readability levels</h1>
-    <p>Enter a text and click "Analyze" to see its <a href="https://www.coe.int/en/web/common-european-framework-reference-languages/level-descriptions">CEFR reading level.</a></p>
-    <form method="POST">
-	    <textarea rows="30" cols="50" name="text" placeholder="Paste text here">{{request.form['text'] or 'Равным образом сложившаяся структура организации требуют от нас анализа форм развития. Таким образом начало повседневной работы по формированию позиции позволяет выполнять важные задания по разработке соответствующий условий активизации.'}}</textarea>
-        <input type="submit" name="freq_form" value="Analyze">
-    </form>
-    <div id="level"><h2>{{level}}</h2></div>
+    <div class="box">
+        <header class="title is-1">
+            <h1>Russian readability levels</h1>
+        </header>
+        <p>Enter a text and click "Analyze" to see its <a
+                href="https://www.coe.int/en/web/common-european-framework-reference-languages/level-descriptions">CEFR
+                reading level.</a></p>
+        <form id="textForm" method="POST">
+            <label for="text">Text:</label>
+            <textarea class="textarea" rows="9" cols="80" name="text" placeholder="Paste text here"
+                contenteditable>{{request.form['text'] or 'Легко не красть. Тем более - не убивать. Легко не вожделеть жены своего ближнего. Куда труднее - не судить. Может быть, это и есть самое трудное в христианстве. Именно потому, что греховность тут неощутима. Подумаешь - не суди! А между тем, "не суди" - это целая философия".'}}</textarea>
+            <progress id="progress" class="progress is-small is-primary is-invisible" max="100">2%</progress>
+            <input class="button is-clickable is-link" type="submit" name="freq_form" value="Analyze">
+        </form>
+        <script src={{ url_for('static', filename='rrf.js' ) }}></script>
+    </div>
+
+    <div class="box">
+        <div id="report"></div>
+    </div>
+    <footer class="footer">
+        <p>Powered by <a href="https://github.com/reynoldsnlp/udar">udar</a>.</p>
+    </footer>
 </body>
+
 </html>
