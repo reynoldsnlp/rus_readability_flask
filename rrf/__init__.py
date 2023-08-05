@@ -2,6 +2,7 @@
 from collections import Counter
 from math import isnan
 import os.path
+import re
 
 from flask import Flask
 from flask import request
@@ -18,14 +19,12 @@ application = app  # our hosting requires `application` in passenger_wsgi
 
 local_dir = os.path.dirname(os.path.abspath(__file__))
 
-CEFR_levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+CEFR_levels = ['A1', 'A2', 'B1', 'B2']  # , 'C1', 'C2']
 lexmin_dict = _get_lexmin_dict()
 level2classes = {"A1": "tag is-primary",
                  "A2": "tag is-link",
-                 "B1": "tag is-info",
-                 "B2": "tag is-success",
-                 "C1": "tag is-warning",
-                 "C2": "tag is-danger"}
+                 "B1": "tag is-warning",
+                 "B2": "tag is-danger"}
 
 
 # load model
@@ -50,11 +49,17 @@ def predict_CEFR_level(doc):
     return CEFR_levels[levels[0]]
 
 
+def clean_lemma(lemma: str) -> str:
+    """Remove superscript enumerators from lemmas."""
+    return re.sub(r'[¹²³⁴⁵⁶⁷⁸⁹⁰⁻]+', '', lemma)
+
+
 def get_lemma_CEFR_dist(doc):
     c = Counter()
     for sent in doc.sentences:
         for tok in sent:
-            relevant_lemmas = [lem for lem in tok.lemmas if lem in lexmin_dict]
+            relevant_lemmas = [clean_lemma(lem) for lem in tok.lemmas
+                               if clean_lemma(lem) in lexmin_dict]
             if relevant_lemmas:
                 c.update([lexmin_dict[relevant_lemmas[0]]])
     spans = [f'''<div class="column"><span class="{ level2classes[lev] } is-large"><b>{lev}:</b>&nbsp;&nbsp;{c[lev]}</span></div>''' for lev in CEFR_levels]
@@ -63,9 +68,9 @@ def get_lemma_CEFR_dist(doc):
 
 def tok2html_func(tok, **kwargs):
     """Pass in to udar.Doc.to_html()."""
-    levels = {lexmin_dict[lemma]
+    levels = {lexmin_dict[clean_lemma(lemma)]
               for lemma in tok.lemmas
-              if lemma in lexmin_dict}
+              if clean_lemma(lemma) in lexmin_dict}
     if not levels:
         return tok.text
     else:

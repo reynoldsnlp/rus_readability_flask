@@ -14,4 +14,7 @@ COPY . .
 
 EXPOSE 5000
 
+# SCRIPT_NAME is used by gunicorn to add prefix to paths, e.g. 0.0.0.0:5000/rus-readability
+ENV SCRIPT_NAME=/rus-readability
+
 CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:5000", "rrf:app"]
