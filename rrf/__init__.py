@@ -70,8 +70,12 @@ def get_lemma_CEFR_dist(doc):
     for sent in doc.sentences:
         for tok in sent:
             reading = tok.most_likely_reading()
-            lemma = clean_lemma(reading.lemmas.pop())
-            pos = {gt2str_pos.get(subr.tags[0], subr.tags[0]) for subr in reading.subreadings}.pop()
+            if reading:
+                lemma = clean_lemma(reading.lemmas.pop())
+                pos = {gt2str_pos.get(subr.tags[0], subr.tags[0]) for subr in reading.subreadings}.pop()
+            else:
+                lemma = ""
+                pos = ""
             level = lexmin_dict.get(lemma)
             lev_class = level2classes.get(level, "")
             lemmas[(level, lev_class)].update([(lemma, pos)])
