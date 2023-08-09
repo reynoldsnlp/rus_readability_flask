@@ -25,7 +25,17 @@ level2classes = {"A1": "tag is-primary",
                  "A2": "tag is-link",
                  "B1": "tag is-warning",
                  "B2": "tag is-danger"}
-
+gt2str_pos = {"N": "noun",
+              "A": "adj",
+              "V": "verb",
+              "Adv": "adv",
+              "Pron": "pronoun",
+              "Pr": "prep",
+              "Pcle": "particle",
+              "CLB": "punc",
+              "PUNCT": "punc",
+              "CC": "coord conj",
+              "CS": "subord conj"}
 
 # load model
 rf = joblib.load(f'{local_dir}/rf.joblib')
@@ -55,15 +65,17 @@ def clean_lemma(lemma: str) -> str:
 
 
 def get_lemma_CEFR_dist(doc):
-    c = Counter()
+    lemmas = {(lev, level2classes[lev]): Counter() for lev in CEFR_levels}  # (lev, lev_class): (lemma, pos): freq
+    lemmas[(None, "")] = Counter()
     for sent in doc.sentences:
         for tok in sent:
-            relevant_lemmas = [clean_lemma(lem) for lem in tok.lemmas
-                               if clean_lemma(lem) in lexmin_dict]
-            if relevant_lemmas:
-                c.update([lexmin_dict[relevant_lemmas[0]]])
-    spans = [f'''<div class="column"><span class="{ level2classes[lev] } is-large"><b>{lev}:</b>&nbsp;&nbsp;{c[lev]}</span></div>''' for lev in CEFR_levels]
-    return Markup(' '.join(spans))
+            reading = tok.most_likely_reading()
+            lemma = clean_lemma(reading.lemmas.pop())
+            pos = {gt2str_pos.get(subr.tags[0], subr.tags[0]) for subr in reading.subreadings}.pop()
+            level = lexmin_dict.get(lemma)
+            lev_class = level2classes.get(level, "")
+            lemmas[(level, lev_class)].update([(lemma, pos)])
+    return lemmas
 
 
 def tok2html_func(tok, **kwargs):

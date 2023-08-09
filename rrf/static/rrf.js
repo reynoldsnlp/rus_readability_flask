@@ -13,7 +13,6 @@ function submitForm(event) {
   })
     .then(response => response.text()) // Extract the response body as text
     .then(responseText => {
-      console.log(responseText);
       const responseDiv = document.getElementById('report');
       responseDiv.innerHTML = responseText; // Display the response in the div
       prog.classList.add('is-invisible');
@@ -29,3 +28,17 @@ function submitForm(event) {
 
 // Add the submitForm function as a submit event listener to the form
 document.getElementById('textForm').addEventListener('submit', submitForm);
+
+const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+  v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+)(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+const sortTable = (th) => {
+  const table = th.closest('table');
+  const tbody = table.querySelector('tbody');
+  Array.from(tbody.querySelectorAll('tr'))
+    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+    .forEach(tr => tbody.appendChild(tr));
+}

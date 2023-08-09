@@ -3,10 +3,35 @@
 
 <h3 id="lexical-level" class="title is-3">Lexical breakdown:</h3>
 <div class="columns is-mobile is-multiline is-centered">
-    {{ lemma_dist }}
+    {% for (lev, lev_class), lev_dict in lemma_dist.items() if lev is not none %}
+    <div class="column"><span class="{{ lev_class }} is-large"><b>{{ lev }}:</b>&nbsp;&nbsp;{{ lev_dict.values() | sum() }}</span></div>
+    {% endfor %}
 </div>
 <br />
 
 <div id="annotated-text">
     {{ annotated_text }}
+</div>
+
+<div id="lemma-report" class="table-container">
+    <table class="table">
+        <thead>
+            <th onClick="sortTable(this)">Lemma</th>
+            <th onClick="sortTable(this)">POS</th>
+            <th onClick="sortTable(this)">Frequency</th>
+            <th onClick="sortTable(this)">Level</th>
+        </thead>
+        <tbody>
+            {% for (lev, lev_class), lev_dict in lemma_dist.items() if lev is not none %}
+            {% for (lemma, pos), freq in lev_dict.items() %}
+            <tr>
+                <td>{{ lemma }}</td>
+                <td>{{ pos }}</td>
+                <td>{{ freq }}</td>
+                <td>{{ lev }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
